@@ -11,7 +11,7 @@
        (str {:version "1.0.0-SNAPSHOT" :homepage "https://github.com/ujihisa/postgres-lingrbot"}))
   (POST "/" {body :body}
         (let [results (for [message (map :message (:events (read-json (slurp body))))
-                            :when (= "computer_science" (:room message))
+                            :when (#{"computer_science" "lingr"} (:room message))
                             :let [query-str (:text message)]
                             :when (re-find #"^[A-Z].*;$" query-str)]
                         (let [result-str (db/go query-str)]
