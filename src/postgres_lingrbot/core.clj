@@ -10,19 +10,18 @@
   (GET "/" []
        (str {:version "1.0.0-SNAPSHOT" :homepage "https://github.com/ujihisa/postgres-lingrbot"}))
   (POST "/" {body :body headers :headers}
-        (do
-          (prn 'remote-addr headers)
+        (when (= "219.94.235.225" (headers "x-forwarded-for"))
           (let [results (for [message (map :message (:events (read-json (slurp body))))
-                            :when (#{"computer_science" "lingr"} (:room message))
-                            :let [query-str (:text message)]
-                            :when (re-find #"^[A-Z].*;$" query-str)]
-                        (let [result-str (db/go query-str)]
-                          (if (< 1000 (count result-str))
-                            (format "%s...(%d characters)"
-                                    (clojure.string/join "" (take 500 result-str))
-                                    (count result-str))
-                            result-str)))]
-          (clojure.string/join "\n" results)))))
+                              :when (#{"computer_science" "lingr"} (:room message))
+                              :let [query-str (:text message)]
+                              :when (re-find #"^[A-Z].*;$" query-str)]
+                          (let [result-str (db/go query-str)]
+                            (if (< 1000 (count result-str))
+                              (format "%s...(%d characters)"
+                                      (clojure.string/join "" (take 500 result-str))
+                                      (count result-str))
+                              result-str)))]
+            (clojure.string/join "\n" results)))))
 
 (defn -main []
  ) (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
