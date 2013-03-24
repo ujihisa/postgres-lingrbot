@@ -9,4 +9,5 @@
                  [org.clojars.ccfontes/korma "0.3.0-beta12-pgssl"]
                  [ring/ring-jetty-adapter "1.1.6"]
                  [compojure "1.1.3"]]
+
   :main postgres-lingrbot.core)
