@@ -1,13 +1,18 @@
 # postgres-lingrbot
 
-A Clojure library designed to ... well, that part is up to you.
+A Lingr Bot to run arbitrary SQL statements on PostgreSQL. Written in Clojure.
 
 ## Usage
 
-FIXME
+* GET http://postgres-lingrbot.herokuapp.com/
+    * meta info
+* POST http://postgres-lingrbot.herokuapp.com/
+    * (with lingr bot post)
+    * message has to begin with a capital letter and end with semicolon
+    * the bot *executes* it.
 
 ## License
 
-Copyright © 2013 FIXME
+Copyright (c) 2013 Tatsuhiro Ujihisa
 
-Distributed under the Eclipse Public License, the same as Clojure.
+GPLv3
