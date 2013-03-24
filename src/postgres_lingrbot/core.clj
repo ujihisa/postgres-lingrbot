@@ -1,5 +1,6 @@
 (ns postgres-lingrbot.core
-  (:use [compojure.core]
+  (:require [postgres-lingrbot.db :as db])
+  (:use [compojure.core :only (defroutes GET POST)]
         [clojure.data.json :only (read-json)]
         [ring.adapter.jetty :only (run-jetty)])
   (:import java.util.concurrent.ExecutionException)
@@ -22,6 +23,6 @@
           (clojure.string/join "\n" results))))
 
 (defn -main []
-  (run-jetty routes {:port 8080 :join? false}))
+ ) (run-jetty routes {:port 8080 :join? false})
 
 ; vim: set lispwords+=defroutes :

@@ -13,7 +13,8 @@
         (re-matches #"postgres://([^:]+):([^@]+)@([^:]+):(\d+)/(.*)"
                     (System/getenv "DATABASE_URL"))]
     {:subprotocol "postgresql"
-     :subname (format "//%s:%s/%s/?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory")
+     :subname (format "//%s:%s/%s/?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+                      host port db)
      :user user
      :password pass}))
 
