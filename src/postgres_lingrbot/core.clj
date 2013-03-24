@@ -9,8 +9,10 @@
 (defroutes routes
   (GET "/" []
        (str {:version "1.0.0-SNAPSHOT" :homepage "https://github.com/ujihisa/postgres-lingrbot"}))
-  (POST "/" {body :body}
-        (let [results (for [message (map :message (:events (read-json (slurp body))))
+  (POST "/" {body :body remote-addr :remote-addr}
+        (do
+          (prn 'remote-addr remote-addr)
+          (let [results (for [message (map :message (:events (read-json (slurp body))))
                             :when (#{"computer_science" "lingr"} (:room message))
                             :let [query-str (:text message)]
                             :when (re-find #"^[A-Z].*;$" query-str)]
@@ -20,7 +22,7 @@
                                     (clojure.string/join "" (take 500 result-str))
                                     (count result-str))
                             result-str)))]
-          (clojure.string/join "\n" results))))
+          (clojure.string/join "\n" results)))))
 
 (defn -main []
  ) (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
