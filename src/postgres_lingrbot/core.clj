@@ -1,40 +1,27 @@
 (ns postgres-lingrbot.core
-  (:use [clojure.java.jdbc :only (with-connection with-query-results print-sql-exception)])
-  (:import [org.postgresql.util PSQLException])
+  (:use [compojure.core]
+        [clojure.data.json :only (read-json)]
+        [ring.adapter.jetty :only (run-jetty)])
+  (:import java.util.concurrent.ExecutionException)
   (:gen-class))
 
-(def psql-db {:subprotocol "postgresql"
-              :subname "//ec2-54-243-125-2.compute-1.amazonaws.com:5432/da186to3ucn6ja/?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-              :user "fwuvhocstogrhv"
-              :password "PASSWORD"})
-
-(defn- hashmap-key-map [f hashmap]
-  (into {}
-        (mapcat (fn [[k v]]
-                  {(keyword (f (name k))) v})
-                hashmap)))
-
-(defn go [query-str]
-  (with-connection psql-db
-    (try
-      (with-query-results xs
-        [#_"DROP TABLE cities"
-         #_"CREATE TABLE cities ( name varchar(80), country_name text)"
-         #_"INSERT INTO cities VALUES ('Vancouver', 'Canada')"
-         query-str]
-        (if xs
-          (mapv #(hashmap-key-map clojure.string/upper-case %)
-                (vec xs))
-          "(empty)"))
-      (catch PSQLException e (let [msg (str (.getServerErrorMessage e))]
-                               (if (= "" msg) "(no results)" msg))))))
+(defroutes routes
+  (GET "/" []
+       (str {:version "1.0.0-SNAPSHOT" :homepage "https://github.com/ujihisa/postgres-lingrbot"}))
+  (POST "/" {body :body}
+        (let [results (for [message (map :message (:events (read-json (slurp body))))
+                            :when (= "computer_science" (:room message))
+                            :let [query-str (:text message)]
+                            :when (re-find #"^[A-Z].*;$" query-str)]
+                        (let [result-str (db/go query-str)]
+                          (if (< 1000 (count result-str))
+                            (format "%s...(%d characters)"
+                                    (clojure.string/join "" (take 500 result-str))
+                                    (count result-str))
+                            result-str)))]
+          (clojure.string/join "\n" results))))
 
 (defn -main []
-  (let [result-str (go "SELECT * FROM cities WHERE name = 'Vancouver'")]
-    (if (< 1000 (count result-str))
-      (format "%s...(%d length)"
-              (clojure.string/join "" (take 500 result-str))
-              (count result-str))
-      result-str)))
+  (run-jetty routes {:port 8080 :join? false}))
 
-; vim: set lispwords+=with-connection,with-query-results :
+; vim: set lispwords+=defroutes :
