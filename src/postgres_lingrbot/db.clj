@@ -9,14 +9,14 @@
               :password ""})
 
 (def psql-db
-  (let [[_ user pass host port db]
-        (re-matches #"postgres://([^:]+):([^@]+)@([^:]+):(\d+)/(.*)"
-                    (System/getenv "DATABASE_URL"))]
-    {:subprotocol "postgresql"
-     :subname (format "//%s:%s/%s/?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-                      host port db)
-     :user user
-     :password pass}))
+  (when-let [url (System/getenv "DATABASE_URL")]
+    (let [[_ user pass host port db]
+          (re-matches #"postgres://([^:]+):([^@]+)@([^:]+):(\d+)/(.*)" url)]
+      {:subprotocol "postgresql"
+       :subname (format "//%s:%s/%s/?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+                        host port db)
+       :user user
+       :password pass})))
 
 (defn- hashmap-key-map [f hashmap]
   (into {}
