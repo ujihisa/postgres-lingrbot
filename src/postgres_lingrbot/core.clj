@@ -1,14 +1,19 @@
 (ns postgres-lingrbot.core
-  (:require [postgres-lingrbot.db :as db])
+  (:require [postgres-lingrbot.db :as db]
+            [leiningen.core.project])
   (:use [compojure.core :only (defroutes GET POST)]
         [clojure.data.json :only (read-json)]
         [ring.adapter.jetty :only (run-jetty)])
   (:import java.util.concurrent.ExecutionException)
   (:gen-class))
 
+(def version
+  (:version (leiningen.core.project/read)))
+
 (defroutes routes
   (GET "/" []
-       (str {:version "1.0.0-SNAPSHOT" :homepage "https://github.com/ujihisa/postgres-lingrbot"}))
+       (str {:version version
+             :homepage "https://github.com/ujihisa/postgres-lingrbot"}))
   (POST "/" {body :body headers :headers}
         (when (= "219.94.235.225" (headers "x-forwarded-for"))
           (let [results (for [message (map :message (:events (read-json (slurp body))))

@@ -9,6 +9,6 @@
                  [postgresql "9.1-901.jdbc4"]
                  [org.clojars.ccfontes/korma "0.3.0-beta12-pgssl"]
                  [ring/ring-jetty-adapter "1.1.6"]
-                 [compojure "1.1.3"]]
-
-  :main postgres-lingrbot.core)
+                 [compojure "1.1.3"]
+                 [leiningen-core "2.0.0"]]
+  :main postgres-lingrbot.db)
