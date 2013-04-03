@@ -10,10 +10,14 @@
 (def version
   (:version (leiningen.core.project/read)))
 
+(def start-time
+  (java.util.Date.))
+
 (defroutes routes
   (GET "/" []
        (str {:version version
-             :homepage "https://github.com/ujihisa/postgres-lingrbot"}))
+             :homepage "https://github.com/ujihisa/postgres-lingrbot"
+             :from start-time}))
   (POST "/" {body :body headers :headers}
         (when (#{"219.94.235.225" "54.251.132.173" "64.46.24.16"} (headers "x-forwarded-for"))
           (let [results (for [message (map :message (:events (read-json (slurp body))))
