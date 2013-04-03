@@ -11,4 +11,5 @@
                  [ring/ring-jetty-adapter "1.1.6"]
                  [compojure "1.1.3"]
                  [leiningen-core "2.0.0"]]
+  :min-lein-version "2.0.0"
   :main postgres-lingrbot.core)
