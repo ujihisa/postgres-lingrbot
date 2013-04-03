@@ -33,7 +33,7 @@
             (clojure.string/join "\n" results)))))
 
 (defn -main []
- ) (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
-     (run-jetty routes {:port port :join? false}))
+  (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
+    (run-jetty routes {:port port :join? false})))
 
 ; vim: set lispwords+=defroutes :
