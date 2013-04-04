@@ -35,9 +35,9 @@
         (if xs
           (let [vect (mapv #(hashmap-key-map clojure.string/upper-case %)
                               (vec xs))
-                vect2 (or (when-let [hashmap-vals (vals (first vect))]
-                            (when (= 1 (count hashmap-vals))
-                              (first hashmap-vals)))
+                vect2 (or (when-let [hashmap (first vect)]
+                            (when (= 1 (count hashmap))
+                              (mapv #(first (vals %)) vect)))
                           vect)
                 vect-or-single (if (= 1 (count vect2)) (first vect2) vect2)]
             (str vect-or-single))
@@ -46,7 +46,7 @@
                                (if (= "" msg) "(no results)" msg))))))
 
 (defn -main []
-  (let [result-str (go "SELECT * FROM cities WHERE name = 'Vancouver';")]
+  (let [result-str (go "SELECT url FROM 画像;")]
     (if (< 1000 (count result-str))
       (format "%s...(%d characters)"
               (clojure.string/join "" (take 500 result-str))
