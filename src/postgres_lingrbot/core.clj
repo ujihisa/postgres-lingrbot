@@ -30,7 +30,8 @@
                                       (clojure.string/join "" (take 500 result-str))
                                       (count result-str))
                               result-str)))]
-            (format "columns: %d, rows: %d" (count (first results)) (count results))
+            (when (< 0 (count results))
+              (format "columns: %d, rows: %d" (count (first results)) (count results)))
             #_(if (and
                   (= 1 (count results))
                   (= 1 (count (first results))))
