@@ -30,13 +30,7 @@
                                       (clojure.string/join "" (take 500 result-str))
                                       (count result-str))
                               result-str)))]
-            (when (< 0 (count results))
-              (format "columns: %d, rows: %d" (count (first results)) (count results)))
-            #_(if (and
-                  (= 1 (count results))
-                  (= 1 (count (first results))))
-              (str (first (vals (first results))))
-              (clojure.string/join "\n" results))))))
+            (clojure.string/join "\n" results)))))
 
 (defn -main []
   (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]

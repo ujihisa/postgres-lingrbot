@@ -33,9 +33,14 @@
          #_"INSERT INTO cities VALUES ('Vancouver', 'Canada')"
          query-str]
         (if xs
-          (str
-            (mapv #(hashmap-key-map clojure.string/upper-case %)
-                  (vec xs)))
+          (let [vect (mapv #(hashmap-key-map clojure.string/upper-case %)
+                              (vec xs))
+                vect2 (or (when-let [hashmap-vals (vals (first vect))]
+                            (when (= 1 (count hashmap-vals))
+                              (first hashmap-vals)))
+                          vect)
+                vect-or-single (if (= 1 (count vect2)) (first vect2) vect2)]
+            (str vect-or-single))
           "(empty)"))
       (catch PSQLException e (let [msg (str (.getServerErrorMessage e))]
                                (if (= "" msg) "(no results)" msg))))))
