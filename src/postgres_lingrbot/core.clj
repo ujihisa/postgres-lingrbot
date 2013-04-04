@@ -19,7 +19,7 @@
              :homepage "https://github.com/ujihisa/postgres-lingrbot"
              :from start-time}))
   (POST "/" {body :body headers :headers}
-        (when (#{"219.94.235.225" "54.251.132.173" "64.46.24.16"} (headers "x-forwarded-for"))
+        (when (#{"219.94.235.225" "54.251.132.173" "64.46.24.16" "106.189.116.59"} (headers "x-forwarded-for"))
           (let [results (for [message (map :message (:events (read-json (slurp body))))
                               :when (#{"computer_science" "lingr" "vim"} (:room message))
                               :let [query-str (:text message)]
