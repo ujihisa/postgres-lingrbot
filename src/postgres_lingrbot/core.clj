@@ -30,7 +30,11 @@
                                       (clojure.string/join "" (take 500 result-str))
                                       (count result-str))
                               result-str)))]
-            (clojure.string/join "\n" results)))))
+            (if (and
+                  (= 1 (count results))
+                  (= 1 (count (first results))))
+              (str (first (vals (first results))))
+              (clojure.string/join "\n" results))))))
 
 (defn -main []
   (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
