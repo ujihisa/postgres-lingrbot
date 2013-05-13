@@ -47,9 +47,9 @@
                            {:form-params
                             {:room room
                              :bot 'postgres
-                             :text (str msg)
+                             :text (format "%s\n%s" msg (:body result))
                              :bot_verifier bot-verifier}})]
-              (format "%s\n%s" msg (:body result)))))))
+              (:body result))))))
 
 (defn -main []
   (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
