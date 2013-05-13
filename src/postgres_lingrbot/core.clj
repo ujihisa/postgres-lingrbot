@@ -35,7 +35,7 @@
                                       (count result-str))
                               result-str)))]
             (clojure.string/join "\n" results))))
-  (POST "/direct" {params :params}
+  (POST "/direct" {params :params headers :headers}
         (when (ACCEPTED_IPS (headers "x-forwarded-for"))
           (str params))))
 
