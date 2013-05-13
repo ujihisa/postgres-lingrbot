@@ -1,6 +1,7 @@
 (ns postgres-lingrbot.core
   (:require [postgres-lingrbot.db :as db]
             [leiningen.core.project])
+  (:require clj-http.client)
   (:use [compojure.core :only (defroutes GET POST)]
         [clojure.data.json :only (read-json)]
         [ring.adapter.jetty :only (run-jetty)])
@@ -37,6 +38,15 @@
             (clojure.string/join "\n" results))))
   (POST "/direct" {params :params headers :headers}
         (when (ACCEPTED_IPS (headers "x-forwarded-for"))
+          (let [room "computer_science" msg (str params) bot-verifier "1d87b654167dcac1331e4b0585673db07f6d733f"]
+              (let [result (clj-http.client/post
+                             "http://lingr.com/api/room/say"
+                             {:form-params
+                              {:room room
+                               :bot 'postgres
+                               :text (str msg)
+                               :bot_verifier bot-verifier}})]
+                (prn (:body result))))
           (str params))))
 
 (defn -main []

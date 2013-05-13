@@ -10,6 +10,7 @@
                  [org.clojars.ccfontes/korma "0.3.0-beta12-pgssl"]
                  [ring/ring-jetty-adapter "1.1.6"]
                  [compojure "1.1.3"]
-                 [leiningen-core "2.0.0"]]
+                 [leiningen-core "2.0.0"]
+                 [clj-http "0.7.2"]]
   :min-lein-version "2.1.0"
   :main postgres-lingrbot.core)
