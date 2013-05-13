@@ -38,17 +38,19 @@
             (clojure.string/join "\n" results))))
   (POST "/direct" {body :body headers :headers}
         (when (ACCEPTED_IPS (headers "x-forwarded-for"))
-          (let [body (slurp body)]
-            (let [room "computer_science" msg body bot-verifier "1d87b654167dcac1331e4b0585673db07f6d733f"]
-              (let [result (clj-http.client/post
-                             "http://lingr.com/api/room/say"
-                             {:form-params
-                              {:room room
-                               :bot 'postgres
-                               :text (str msg)
-                               :bot_verifier bot-verifier}})]
-                (prn (:body result))))
-            (format "%s (from %s)" body (headers "x-forwarded-for"))))))
+          (let [body (slurp body)
+                room "computer_science"
+                msg (format "%s (requested from %s)" body (headers "x-forwarded-for"))
+                bot-verifier "1d87b654167dcac1331e4b0585673db07f6d733f"]
+            (let [result (clj-http.client/post
+                           "http://lingr.com/api/room/say"
+                           {:form-params
+                            {:room room
+                             :bot 'postgres
+                             :text (str msg)
+                             :bot_verifier bot-verifier}})]
+              (prn (:body result))))
+            msg)))
 
 (defn -main []
   (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
