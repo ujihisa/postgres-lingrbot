@@ -41,7 +41,8 @@
           (let [body (slurp body)
                 room "computer_science"
                 msg (format "%s (requested from %s)" body (headers "x-forwarded-for"))
-                bot-verifier "1d87b654167dcac1331e4b0585673db07f6d733f"]
+                bot-verifier "1d87b654167dcac1331e4b0585673db07f6d733f"
+                result-str (db/go query-str)]
             (let [result (clj-http.client/post
                            "http://lingr.com/api/room/say"
                            {:form-params
@@ -49,7 +50,7 @@
                              :bot 'postgres
                              :text (format "%s\n%s" msg (:body result))
                              :bot_verifier bot-verifier}})]
-              (:body result))))))
+              result-str)))))
 
 (defn -main []
   (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
