@@ -34,7 +34,10 @@
                                       (clojure.string/join "" (take 500 result-str))
                                       (count result-str))
                               result-str)))]
-            (clojure.string/join "\n" results)))))
+            (clojure.string/join "\n" results))))
+  (POST "/direct" {params :params}
+        (when (ACCEPTED_IPS (headers "x-forwarded-for"))
+          (str params))))
 
 (defn -main []
   (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
