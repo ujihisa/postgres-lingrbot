@@ -11,7 +11,7 @@ A Lingr Bot to run arbitrary SQL statements on PostgreSQL. Written in Clojure.
     * message has to begin with a capital letter and end with semicolon
     * the bot *executes* it.
 * POST http://postgres-lingrbot.herokuapp.com/direct
-    * e.g. curl -d 'Select * from hello;' http://postgres-lingrbot.herokuapp.com/direct?test=verytest
+    * e.g. curl -d 'Select * from hello;' http://postgres-lingrbot.herokuapp.com/direct
 
 ## License
 
