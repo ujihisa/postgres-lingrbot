@@ -17,7 +17,8 @@
   (GET "/" []
        (str {:version version
              :homepage "https://github.com/ujihisa/postgres-lingrbot"
-             :from start-time}))
+             :from start-time
+             :author "ujihisa"}))
   (POST "/" {body :body headers :headers}
         (when (#{"219.94.235.225" "54.251.132.173" "64.46.24.16" "46.51.220.242" "106.189.116.59"} (headers "x-forwarded-for"))
           (let [results (for [message (map :message (:events (read-json (slurp body))))
