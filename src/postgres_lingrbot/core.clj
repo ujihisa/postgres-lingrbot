@@ -49,8 +49,7 @@
                              :bot 'postgres
                              :text (str msg)
                              :bot_verifier bot-verifier}})]
-              (prn (:body result)))
-            msg))))
+              (format "%s\n%s" msg (:body result)))))))
 
 (defn -main []
   (let [port (Integer/parseInt (or (System/getenv "PORT") "8080"))]
