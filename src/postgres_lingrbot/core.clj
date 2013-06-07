@@ -16,7 +16,7 @@
 
 (def ACCEPTED_IPS
   #{"219.94.235.225" "54.251.132.173" "64.46.24.16" "46.51.220.242" "106.189.116.59"
-    "50.17.185.176" #_"lingrbot.herokuapp.com"})
+    "50.17.119.79" #_"for lingrbot.herokuapp.com"})
 
 (defroutes routes
   (GET "/" []
