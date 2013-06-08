@@ -3,11 +3,6 @@
   (:import [org.postgresql.util PSQLException])
   (:gen-class))
 
-#_(def psql-db {:subprotocol "postgresql"
-              :subname "//ec2-54-243-125-2.compute-1.amazonaws.com:5432/da186to3ucn6ja/?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-              :user "fwuvhocstogrhv"
-              :password ""})
-
 (def psql-db
   (when-let [url (System/getenv "DATABASE_URL")]
     (let [[_ user pass host port db]
