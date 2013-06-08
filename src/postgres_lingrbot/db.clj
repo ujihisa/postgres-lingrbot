@@ -1,5 +1,6 @@
 (ns postgres-lingrbot.db
-  (:use [clojure.java.jdbc :only (with-connection with-query-results print-sql-exception)])
+  (:use [clojure.java.jdbc :only (with-connection with-query-results print-sql-exception)]
+        [clojure.string :only (upper-case join)])
   (:import [org.postgresql.util PSQLException])
   (:gen-class))
 
@@ -25,7 +26,7 @@
     (try
       (with-query-results xs [query-str]
         (if xs
-          (let [vect (mapv #(hashmap-key-map clojure.string/upper-case %)
+          (let [vect (mapv #(hashmap-key-map upper-case %)
                               (vec xs))
                 vect2 (or (when-let [hashmap (first vect)]
                             (when (= 1 (count hashmap))
@@ -41,7 +42,7 @@
   (let [result-str (go "SELECT url FROM 画像;")]
     (if (< 1000 (count result-str))
       (format "%s...(%d characters)"
-              (clojure.string/join "" (take 500 result-str))
+              (join "" (take 500 result-str))
               (count result-str))
       result-str)))
 
