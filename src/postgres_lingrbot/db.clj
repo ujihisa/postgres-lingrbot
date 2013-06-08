@@ -13,8 +13,9 @@
     (let [[_ user pass host port db]
           (re-matches #"postgres://([^:]+):([^@]+)@([^:]+):(\d+)/(.*)" url)]
       {:subprotocol "postgresql"
-       :subname (format "//%s:%s/%s/?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-                        host port db)
+       :subname
+       (format "//%s:%s/%s/?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+               host port db)
        :user user
        :password pass})))
 
@@ -27,11 +28,7 @@
 (defn go [query-str]
   (with-connection psql-db
     (try
-      (with-query-results xs
-        [#_"DROP TABLE cities"
-         #_"CREATE TABLE cities ( name varchar(80), country_name text)"
-         #_"INSERT INTO cities VALUES ('Vancouver', 'Canada')"
-         query-str]
+      (with-query-results xs [query-str]
         (if xs
           (let [vect (mapv #(hashmap-key-map clojure.string/upper-case %)
                               (vec xs))
