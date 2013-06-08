@@ -17,4 +17,4 @@ A Lingr Bot to run arbitrary SQL statements on PostgreSQL. Written in Clojure.
 
 Copyright (c) 2013 Tatsuhiro Ujihisa
 
-GPLv3
+GPLv3 or later
