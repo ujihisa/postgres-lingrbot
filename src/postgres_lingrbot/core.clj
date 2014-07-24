@@ -27,7 +27,7 @@
   (POST "/" {body :body headers :headers}
         (when (ACCEPTED_IPS (headers "x-forwarded-for"))
           (let [results (for [message (map :message (:events (read-json (slurp body))))
-                              :when (#{"computer_science" "lingr" "vim"} (:room message))
+                              :when (#{"computer_science" "lingr" "vim" "mcujm"} (:room message))
                               :let [query-str (:text message)]
                               :when (re-find #"^[A-Z].*;$" query-str)]
                           (let [result-str (db/go query-str)]
